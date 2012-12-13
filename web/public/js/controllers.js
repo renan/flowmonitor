@@ -9,9 +9,15 @@ var HomeController = function($scope) {
     }
   ];
 
-  $scope.servers.unknown = [
-    {
+  $scope.servers.unknown = [];
+
+  window.setTimeout(function() {
+    console.log('Adding unknown server');
+
+    $scope.servers.unknown.push({
       hostname: 'col01.flowmonitor.io'
-    }
-  ];
+    });
+
+    $scope.$digest();
+  }, 3000);
 };
