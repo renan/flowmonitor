@@ -1,0 +1,100 @@
+<script src="/socket.io/socket.io.js" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://raw.github.com/joewalnes/smoothie/master/smoothie.js"></script>
+
+
+<script>
+    var socket = io.connect('http://tools.fshosting.net:9999');
+
+    // on connection to server, ask for desired monitoring server if connected with an anonymous callback
+    socket.on('connect', function(){
+        // call the server-side function 'monip' and send one parameter (value of prompt)
+        socket.emit('monip', prompt("What server ip do you want to monitor ?"));
+    });
+    var cpucounter = {};
+    // update graphs
+    socket.on('updatelog', function (serverip, data) {
+        //console.log(data);
+        //var mtx = jQuery.parseJSON(data);
+
+        var mtx = JSON.parse(data);
+        cpucounter['host' + serverip] = 100 - mtx.idl;
+
+       // $('#log').append('<b>'+ serverip + ':</b> ' + mtx.idl + '<br>');
+        //console.log(data.idl);
+    });
+
+    // update server list
+    socket.on('updateservers', function(data) {
+        $('#servers').empty();
+        $('#servergraphs').empty();
+        $.each(data, function(key, value) {
+            $('#servers').append('<div>' + key + '</div>');
+            // add graph.
+            $('#servergraphs').append('<h4>' + key + '</h4><canvas id="host' + key + 'Cpu" width="500" height="100"></canvas>');
+            // init graph to start
+            initHost('host' + key);
+
+        });
+    });
+    socket.on('updatemonitor', function(data) {
+        $('#monitor').empty();
+        $.each(data, function(key, value) {
+            $('#monitor').append('<div>' + key + '</div>');
+        });
+    });
+
+
+    // on load of page
+    $(function(){
+        // when the client clicks SEND
+        $('#datasend').click( function() {
+            var message = $('#data').val();
+            $('#data').val('');
+            // tell server to execute 'sendchat' and send along one parameter
+            socket.emit('updatelog', message);
+        });
+
+    });
+
+</script>
+
+<script>
+
+    function initHost(hostId) {
+
+        var line1 = new TimeSeries();
+
+        setInterval(function() {
+
+            line1.append(new Date().getTime(), cpucounter[hostId]);
+//            console.log(hostId + ' Cpu: ' + cpucounter[hostId]);
+//            console.log(cpucounter);
+            delete cpucounter;
+
+        }, 1000);
+        // Build the timeline
+        var timeline = new SmoothieChart({ millisPerPixel: 20, grid: { strokeStyle: '#555555', lineWidth: 1, millisPerLine: 1000, verticalSections: 4 }});
+        timeline.addTimeSeries(line1, { strokeStyle: 'rgba(255, 0, 0, 1)', fillStyle: 'rgba(255, 0, 0, 0.1)', lineWidth: 3 });
+
+        timeline.streamTo(document.getElementById(hostId + 'Cpu'), 1000);
+    }
+</script>
+<body>
+
+
+
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+    <b>You are monitoring:</b>
+    <div id="monitor"></div>
+    <b>Servers broadcasting:</b>
+    <div id="servers"></div>
+</div>
+<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+    <h1>CPU Load</h1>
+
+    <div id="servergraphs"></div>
+</div>
+
+<div id="log"></div>
