@@ -38,7 +38,9 @@
     <div class="row-fluid">
         <div class="span9" ng-controller='AppCtrl'>
             <h1>CPU tracker</h1>
-            <li ng-repeater="message in messages">{{message.serverip}} is talking</li>
+            <p ng-repeat="i in messages">
+                <b>{{i.server_addr}}</b> > Idle: {{i.idl}}
+            </p>
         </div>
     </div>
 </div>

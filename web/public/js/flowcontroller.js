@@ -9,6 +9,8 @@ function AppCtrl($scope, socket) {
 
     // Socket listeners
     // ================
+    $scope.messages = [];
+
 
     socket.on('init', function (data) {
         $scope.name = data.name;
@@ -16,8 +18,9 @@ function AppCtrl($scope, socket) {
     });
 
     socket.on('updatelog', function (serverip, message) {
-         $scope.messages.push({serverip: 'serverip'});
-        console.log(serverip);
+        var mtx = JSON.parse(message);
+        console.log(mtx);
+         $scope.messages.push(mtx);
     });
 
     socket.on('graph:create', function (data) {
