@@ -1,3 +1,4 @@
+
 var HomeController = function($scope) {
   $scope.servers = {};
   $scope.servers.active = [
@@ -18,6 +19,8 @@ var HomeController = function($scope) {
       hostname: 'col01.flowmonitor.io'
     });
 
+
     $scope.$digest();
   }, 3000);
+
 };
