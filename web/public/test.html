@@ -10,11 +10,12 @@
     <script src="js/services.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/directives.js"></script>
+
     <script src="js/socket.io.js" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
-<body>
+<body ng-controller='AppCtrl'>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -36,7 +37,7 @@
 
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span9" ng-controller='AppCtrl'>
+        <div class="span9">
             <h1>CPU tracker</h1>
             <p ng-repeat="i in messages">
                 <b>{{i.server_addr}}</b> > Idle: {{i.idl}}
