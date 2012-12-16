@@ -19,15 +19,14 @@ directives.directive('appVersion', ['version', function(version) {
 
 directives.directive('highchart', function() {
 	return function (scope, element, attrs, controller) {
-
-        console.log(scope.server.id);
+        console.log(scope.server);
  		window.$[ 'chart-' + scope.server.id] = new Highcharts.Chart({
 			chart : {
 				renderTo : element[0],
                 type: 'areaspline'
 			},
  			title : {
-				text : 'CPU Tracker'
+				text : 'CPU Tracker | ' + scope.server.ip
 			},
             yAxis : [{
                 min: 0,
