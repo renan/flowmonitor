@@ -37,7 +37,13 @@ function AppCtrl($scope, socket) {
                 (new Date()).getTime(),
                 parseFloat(100 - mtx['idl'])
             ];
-            window.chart.series[0].addPoint(point);
+
+            //var test = 'chart-' + $scope.servers[server.ip].id;
+            window.$['chart-' + $scope.servers[server.ip].id ].series[0].addPoint(point);
+            //window.chart.series[0].addPoint(point);
+
+            //console.log(window);
+            //window.chart.series[1].addPoint(point);
         }
     });
 

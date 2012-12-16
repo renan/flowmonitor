@@ -17,13 +17,16 @@ directives.directive('appVersion', ['version', function(version) {
     };
 }]);
 
-directives.directive('highchart', function($parse) {
+directives.directive('highchart', function() {
 	return function (scope, element, attrs, controller) {
-		window.chart = new Highcharts.StockChart({
+
+        console.log(scope.server.id);
+ 		window.$[ 'chart-' + scope.server.id] = new Highcharts.StockChart({
 			chart : {
 				renderTo : element[0]
+                //renderTo : element[0]
 			},
-			title : {
+ 			title : {
 				text : 'CPU Tracker'
 			},
 			series : [{
