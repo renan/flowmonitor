@@ -22,6 +22,7 @@ function AppCtrl($scope, socket) {
     socket.on('updatelog', function (serverip, message) {
         var mtx = JSON.parse(message);
         //$scope.messages.push(mtx);
+        //console.log(mtx);
 
         var server = {
             id: serverIndex,
@@ -34,14 +35,32 @@ function AppCtrl($scope, socket) {
             $scope.$apply();
         } else {
 
-            var point = [
+            var point_idl = [
                 (new Date()).getTime(),
-                parseFloat(100 - mtx['idl'])
+                parseFloat(mtx['idl'])
+            ];
+            var point_usr = [
+                (new Date()).getTime(),
+                parseFloat(mtx['usr'])
+            ];
+            var point_sys = [
+                (new Date()).getTime(),
+                parseFloat(mtx['sys'])
+            ];
+            var point_wai = [
+                (new Date()).getTime(),
+                parseFloat(mtx['wai'])
             ];
             // do not track more then 20 data points. (if you want highstock to work proper might wanne remove this again)
             shift = window.$['chart-' + $scope.servers[server.ip].id ].series[0].data.length > 20;
+            shift = window.$['chart-' + $scope.servers[server.ip].id ].series[1].data.length > 20;
+            shift = window.$['chart-' + $scope.servers[server.ip].id ].series[2].data.length > 20;
+            shift = window.$['chart-' + $scope.servers[server.ip].id ].series[3].data.length > 20;
 
-            window.$['chart-' + $scope.servers[server.ip].id ].series[0].addPoint(point, true, shift);
+            window.$['chart-' + $scope.servers[server.ip].id ].series[0].addPoint(point_idl, true, shift);
+            window.$['chart-' + $scope.servers[server.ip].id ].series[1].addPoint(point_usr, true, shift);
+            window.$['chart-' + $scope.servers[server.ip].id ].series[2].addPoint(point_sys, true, shift);
+            window.$['chart-' + $scope.servers[server.ip].id ].series[3].addPoint(point_wai, true, shift);
         }
     });
 

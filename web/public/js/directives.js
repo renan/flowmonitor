@@ -32,22 +32,56 @@ directives.directive('highchart', function() {
                 min: 0,
                 max: 100,
                 title: {
-                    text: 'CPU Load',
+                    text: 'Load',
                     margin: 10
                 }
             }],
             xAxis: {
                  type: 'datetime'
              },
-			series : [{
-				name : 'CPU',
+             plotOptions: {
+                 series: {
+                     marker: {
+                         fillColor: 'none',
+                         lineColor: null
+                     }
+                 }
+             },
+			series : [
+                {
+				name : 'idle',
 				data : [
 					[(new Date()).getTime(), 2]
-				],
-				tooltip: {
-					valueDecimals: 2
-				}
-			}]
+				]
+			},
+                {
+                 name : 'usr',
+                 data : [
+                        [(new Date()).getTime(), 2]
+                 ],
+                 tooltip: {
+                     valueDecimals: 2
+                 }
+                },
+                {
+                    name : 'sys',
+                    data : [
+                        [(new Date()).getTime(), 2]
+                    ],
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                },
+                {
+                    name : 'wait',
+                    data : [
+                        [(new Date()).getTime(), 2]
+                    ],
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                }
+            ]
 		});
 	};
 });
