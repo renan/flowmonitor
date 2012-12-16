@@ -33,17 +33,15 @@ function AppCtrl($scope, socket) {
 
             $scope.$apply();
         } else {
+
             var point = [
                 (new Date()).getTime(),
                 parseFloat(100 - mtx['idl'])
             ];
+            // do not track more then 20 data points. (if you want highstock to work proper might wanne remove this again)
+            shift = window.$['chart-' + $scope.servers[server.ip].id ].series[0].data.length > 20;
 
-            //var test = 'chart-' + $scope.servers[server.ip].id;
-            window.$['chart-' + $scope.servers[server.ip].id ].series[0].addPoint(point);
-            //window.chart.series[0].addPoint(point);
-
-            //console.log(window);
-            //window.chart.series[1].addPoint(point);
+            window.$['chart-' + $scope.servers[server.ip].id ].series[0].addPoint(point, true, shift);
         }
     });
 

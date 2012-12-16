@@ -21,14 +21,25 @@ directives.directive('highchart', function() {
 	return function (scope, element, attrs, controller) {
 
         console.log(scope.server.id);
- 		window.$[ 'chart-' + scope.server.id] = new Highcharts.StockChart({
+ 		window.$[ 'chart-' + scope.server.id] = new Highcharts.Chart({
 			chart : {
-				renderTo : element[0]
-                //renderTo : element[0]
+				renderTo : element[0],
+                type: 'areaspline'
 			},
  			title : {
 				text : 'CPU Tracker'
 			},
+            yAxis : [{
+                min: 0,
+                max: 100,
+                title: {
+                    text: 'CPU Load',
+                    margin: 10
+                }
+            }],
+            xAxis: {
+                 type: 'datetime'
+             },
 			series : [{
 				name : 'CPU',
 				data : [
