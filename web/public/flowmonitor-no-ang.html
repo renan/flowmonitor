@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <title>Flow Monitor</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/flowcontroller.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script type="text/javascript">
+
+
+        $(function () {
+            $(document).ready(function() {
+                Highcharts.setOptions({
+                    global: {
+                        useUTC: false
+                    }
+                });
+
+                var chart;
+                chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'containerx',
+                        type: 'area',
+                        marginRight: 10,
+                        events: {
+                            load: function() {
+
+                                // set up the updating of the chart each second
+                                var series = this.series[0];
+                                setInterval(function() {
+                                    var x = (new Date()).getTime(), // current time
+                                            y = Math.random();
+                                    series.addPoint([x, y], true, true);
+                                }, 1000);
+                            }
+                        }
+                    },
+                    title: {
+                        text: 'Live random data'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        tickPixelInterval: 150
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Value'
+                        },
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }]
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return '<b>'+ this.series.name +'</b><br/>'+
+                                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                                    Highcharts.numberFormat(this.y, 2);
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Random data',
+                        data: (function() {
+                            // generate an array of random data
+                            var data = [],
+                                    time = (new Date()).getTime(),
+                                    i;
+
+                            for (i = -19; i <= 0; i++) {
+                                data.push({
+                                    x: time + i * 1000,
+                                    y: Math.random()
+                                });
+                            }
+                            return data;
+                        })()
+                    }]
+                });
+            });
+
+        });
+
+
+    </script>
+
+
+    <script src="js/socket.io.js" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/main.css" rel="stylesheet" media="screen">
+</head>
+<body ng-controller='AppCtrl'>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="#">FlowMonitor</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    Logged in as <a href="#" class="navbar-link">Username</a>
+                </p>
+                <ul class="nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span9">
+            <h1>CPU tracker</h1>
+
+
+
+
+            <div id="containerx" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+            <p ng-repeat="i in messages">
+                <b>{{i.server_addr}}</b> > Idle: {{i.idl}}
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/highcharts/highcharts.js"></script>
+<script src="js/highcharts/modules/exporting.js"></script>
+
+</body>
+</html>
