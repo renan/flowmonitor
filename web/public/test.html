@@ -5,6 +5,8 @@
     <title>Flow Monitor</title>
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
     <script src="js/app.js"></script>
     <script src="js/flowcontroller.js"></script>
     <script src="js/services.js"></script>
@@ -41,6 +43,11 @@
             <p ng-repeat="i in messages">
                 <b>{{i.server_addr}}</b> > Idle: {{i.idl}}
             </p>
+
+            <div ng-repeat="server in servers">
+                <strong>{{server.ip}}</strong>
+                <div highchart id="highchartInstance-{{server.id}}"></div>
+            </div>
         </div>
     </div>
 </div>

@@ -6,10 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 function AppCtrl($scope, socket) {
-
     // Socket listeners
     // ================
     $scope.messages = [];
+    $scope.servers = {};
+
+    var serverIndex = 1;
 
 
     socket.on('init', function (data) {
@@ -19,8 +21,24 @@ function AppCtrl($scope, socket) {
 
     socket.on('updatelog', function (serverip, message) {
         var mtx = JSON.parse(message);
-        console.log(mtx);
-         $scope.messages.push(mtx);
+        //$scope.messages.push(mtx);
+
+        var server = {
+            id: serverIndex,
+            ip: mtx.server_addr
+        };
+        if (typeof $scope.servers[server.ip] === 'undefined') {
+            $scope.servers[server.ip] = server;
+            serverIndex++;
+
+            $scope.$apply();
+        } else {
+            var point = [
+                (new Date()).getTime(),
+                parseFloat(mtx['undefined'])
+            ];
+            window.chart.series[0].addPoint(point);
+        }
     });
 
     socket.on('graph:create', function (data) {
