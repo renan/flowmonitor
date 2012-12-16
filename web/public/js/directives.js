@@ -23,7 +23,8 @@ directives.directive('highchart', function() {
  		window.$[ 'chart-' + scope.server.id] = new Highcharts.Chart({
 			chart : {
 				renderTo : element[0],
-                type: 'areaspline'
+                type: 'areaspline',
+                height: 175
 			},
  			title : {
 				text : 'CPU Tracker | ' + scope.server.ip
