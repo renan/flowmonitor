@@ -7,7 +7,7 @@
  *
  */
 app.factory('socket', function ($rootScope) {
-    var socket = io.connect('http://tools.fshosting.net:9999');
+    var socket = io.connect('http://localhost:9999');
     return {
         on: function (eventName, callback) {
             socket.on(eventName, function () {
